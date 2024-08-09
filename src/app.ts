@@ -27,6 +27,7 @@
  */
 
 import express, { Request, Response, NextFunction } from 'express';
+import download from './routes/downloadRoute'
 
 const PORT = 8080;
 const app = express();
@@ -59,7 +60,7 @@ app.use(errorHandler);
  * Routes for handling download-related requests.
  * All routes under '/download' will be handled by downloadRoute.
  */
-app.use('/download');
+app.use('/download', download);
 
 // FIRE UP THE API
 app.listen(PORT, () => {
