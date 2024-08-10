@@ -27,7 +27,7 @@
  */
 
 import express, { Request, Response, NextFunction } from 'express';
-import download from './routes/downloadRoute'
+import info from './routes/videoInfoRoute'
 
 const PORT = 8080;
 const app = express();
@@ -60,7 +60,7 @@ app.use(errorHandler);
  * Routes for handling download-related requests.
  * All routes under '/download' will be handled by downloadRoute.
  */
-app.use('/download', download);
+app.use('/videoInfo', info);
 
 // FIRE UP THE API
 app.listen(PORT, () => {
