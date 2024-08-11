@@ -1,18 +1,27 @@
 import express, { Request, Response } from "express";
 import ytdl from '@distube/ytdl-core';
 import fs from 'fs';
-import { VideoInfoRequest, DownloadResponse } from '../types/interfaces'
-
+import { VideoInfoRequest, InfoResponse, VideoInfo, VideoFormat } from '../types/interfaces'
 
 const router = express.Router();
-const outputPath = 'D:/documents/TubeFetch/tubeFetchApi/downloads/video.mp4'
 
-router.post('/', async (req: Request<{}, {}, VideoInfoRequest>, res: Response<DownloadResponse>) => {
+router.post('/', async (req: Request<{}, {}, VideoInfoRequest>, res: Response<InfoResponse>) => {
     const { url } = req.body;
 
     try {
         const info = await ytdl.getInfo(url);
-        const vidInfo = info.videoDetails;
+        const videoDetails = info.videoDetails;
+
+        const extractedVideoDetails: VideoInfo = {
+            title: videoDetails.title,
+            ownerChannelName: videoDetails.ownerChannelName,
+            videoId: videoDetails.videoId,
+            thumbnail: {
+                url: videoDetails.thumbnails[0].url,
+                width: videoDetails.thumbnails[0].width,
+                height: videoDetails.thumbnails[0].height
+            }
+        }
 
         // Filter to get formats with both video and audio
         const formats = info.formats
@@ -25,7 +34,7 @@ router.post('/', async (req: Request<{}, {}, VideoInfoRequest>, res: Response<Do
 
 
         // const format = ytdl.chooseFormat(info.formats, { quality: 'highestvideo' });
-        console.log(formats);
+        //console.log(extractedVideoDetails);
 
 
         if (formats.length === 0) {
@@ -33,9 +42,17 @@ router.post('/', async (req: Request<{}, {}, VideoInfoRequest>, res: Response<Do
             return res.status(404).json({ code: 'Error', message: 'No available video formats found' });
         }
 
-        // Choose the lowest quality format
-        const format = formats[0];
+        // Choose the highest quality format
+        const format: VideoFormat = formats[0];
+        //console.log(format);
 
+        const InfoResponse: InfoResponse = {
+            code: 'information_found',
+            message: 'Information about the video is successfully found',
+            videoInfo: extractedVideoDetails,
+            format: format
+        }
+        return res.status(200).json(InfoResponse)
 
     } catch (error) {
         console.error('Error:', error);

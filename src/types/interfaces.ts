@@ -1,6 +1,6 @@
 
 export interface VideoFormat {
-    mimeType: string;
+    mimeType?: string;
     qualityLabel?: string;
     bitrate?: number;
     audioBitrate?: number;

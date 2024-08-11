@@ -1,4 +1,6 @@
 export default async function download(url: String, quality: String) {
+    const outputPath = 'D:/documents/TubeFetch/tubeFetchApi/downloads/video.mp4'
+
     try {
         // Choose the lowest quality format
         // const format = formats[0];
