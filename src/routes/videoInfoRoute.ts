@@ -32,11 +32,6 @@ router.post('/', async (req: Request<{}, {}, VideoInfoRequest>, res: Response<In
                 return heightB - heightA; // Sort by highest quality
             }); // Sort by quality in descending order
 
-
-        // const format = ytdl.chooseFormat(info.formats, { quality: 'highestvideo' });
-        //console.log(extractedVideoDetails);
-
-
         if (formats.length === 0) {
             console.error('No available video formats found');
             return res.status(404).json({ code: 'Error', message: 'No available video formats found' });
