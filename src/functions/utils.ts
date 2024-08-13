@@ -1,4 +1,7 @@
-export default async function download(url: String, quality: String) {
+import ytdl from '@distube/ytdl-core';
+import fs from 'fs';
+
+export async function download(url: String, quality: String) {
     const outputPath = 'D:/documents/TubeFetch/tubeFetchApi/downloads/video.mp4'
 
     try {
@@ -78,4 +81,8 @@ export default async function download(url: String, quality: String) {
         // console.error('Error:', error);
         // res.status(500).json({ code: 'Error', message: 'Failed to process request' });
     }
+}
+
+export async function validateUrl(url: string){
+    return ytdl.validateURL(url);
 }
