@@ -1,32 +1,4 @@
-
-export interface VideoFormat {
-    mimeType?: string;
-    qualityLabel?: string;
-    bitrate?: number;
-    audioBitrate?: number;
-    itag: number;
-    url: string;
-    width?: number;
-    height?: number;
-    lastModified?: string;
-    quality?: string;
-    fps?: number;
-    projectionType?: string;
-    audioQuality?: string;
-    approxDurationMs?: string;
-    audioSampleRate?: string;
-    audioChannels?: number;
-    hasVideo: boolean;
-    hasAudio: boolean;
-    container?: string;
-    codecs?: string;
-    videoCodec?: string;
-    audioCodec?: string;
-    isLive?: boolean;
-    isHLS?: boolean;
-    isDashMPD?: boolean;
-}
-
+import { videoFormat } from "@distube/ytdl-core";
 export interface VideoInfo {
     title: String,
     ownerChannelName: String,
@@ -40,12 +12,10 @@ export interface VideoInfo {
 
 export interface VideoInfoRequest {
     url: string;
-
 }
-
 export interface InfoResponse {
     code: string;
     message: string;
     videoInfo?: VideoInfo,
-    format?: VideoFormat
+    formats?: videoFormat[]
 }

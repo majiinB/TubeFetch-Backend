@@ -1,14 +1,14 @@
 import express, { Request, Response } from "express";
-import ytdl from '@distube/ytdl-core';
-import {validateUrl} from '../functions/utils';
-import { VideoInfoRequest, InfoResponse, VideoInfo, VideoFormat } from '../types/interfaces'
+import ytdl, { videoFormat } from '@distube/ytdl-core';
+import { download, validateUrl } from '../functions/utils';
+import { VideoInfoRequest, InfoResponse, VideoInfo } from '../types/interfaces'
 
 const router = express.Router();
 
 router.post('/', async (req: Request<{}, {}, VideoInfoRequest>, res: Response<InfoResponse>) => {
     const { url } = req.body;
 
-    if(!validateUrl(url) || !url){
+    if (!validateUrl(url) || !url) {
         return res.status(404).json({ code: 'Invalid_url', message: 'Invalid url please try again' });
     }
 
@@ -42,15 +42,17 @@ router.post('/', async (req: Request<{}, {}, VideoInfoRequest>, res: Response<In
         }
 
         // Choose the highest quality format
-        const format: VideoFormat = formats[0];
-        //console.log(format);
+        const format: videoFormat[] = formats;
+        console.log(format);
 
         const InfoResponse: InfoResponse = {
             code: 'information_found',
             message: 'Information about the video is successfully found',
             videoInfo: extractedVideoDetails,
-            format: format
+            formats: format
         }
+
+        //download(url, format[0]);
         return res.status(200).json(InfoResponse)
 
     } catch (error) {
