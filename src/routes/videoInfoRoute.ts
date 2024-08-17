@@ -9,7 +9,7 @@ router.post('/', async (req: Request<{}, {}, VideoInfoRequest>, res: Response<In
     const { url } = req.body;
 
     if (!validateUrl(url) || !url) {
-        return res.status(404).json({ code: 'Invalid_url', message: 'Invalid url please try again' });
+        return res.status(404).json({ code: 'invalid_url', message: 'Invalid url please try again' });
     }
 
     try {
@@ -28,7 +28,7 @@ router.post('/', async (req: Request<{}, {}, VideoInfoRequest>, res: Response<In
         }
 
         // Filter to get formats with both video and audio
-        const formats = info.formats
+        const formats: videoFormat[] = info.formats
             .filter(format => format.hasVideo && format.hasAudio) // Ensure both video and audio
             .sort((a, b) => {
                 const heightA = a.height ?? 0; // Default to 0 if height is undefined
@@ -37,27 +37,21 @@ router.post('/', async (req: Request<{}, {}, VideoInfoRequest>, res: Response<In
             }); // Sort by quality in descending order
 
         if (formats.length === 0) {
-            console.error('No available video formats found');
-            return res.status(404).json({ code: 'Error', message: 'No available video formats found' });
+            return res.status(404).json({ code: 'no_available_format', message: 'No available video formats found' });
         }
-
-        // Choose the highest quality format
-        const format: videoFormat[] = formats;
-        console.log(format);
 
         const InfoResponse: InfoResponse = {
             code: 'information_found',
             message: 'Information about the video is successfully found',
             videoInfo: extractedVideoDetails,
-            formats: format
+            formats: formats
         }
 
-        //download(url, format[0]);
         return res.status(200).json(InfoResponse)
 
     } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ code: 'Error', message: 'Failed to process request' });
+        console.error('Error:', error); // For debugging
+        res.status(500).json({ code: 'internal_server_error', message: 'Failed to process request' });
     }
 });
 
