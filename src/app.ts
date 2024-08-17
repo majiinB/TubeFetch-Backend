@@ -1,11 +1,11 @@
 /**
- * Aqua Fresco API
+ * TubeFetch API
  * 
  * @file app.ts
  * @description This is the main entry point for the TubeFetch API. It sets up the Express application,
  * 
  * Routes:
- * - /download: Handles download-related requests.
+ * - /videoInfo: Handles videoInfo-related requests.
  * 
  * Middleware:
  * - express.json(): Parses incoming request bodies in JSON format.
@@ -22,8 +22,8 @@
  * @module app
  * 
  * @author Arthur M. Artugue
- * @created 2024-08-8
- * @updated 2024-08-8
+ * @created 2024-08-10
+ * @updated 2024-08-17
  */
 
 import express, { Request, Response, NextFunction } from 'express';
@@ -57,8 +57,8 @@ app.use(errorHandler);
 // END POINTS
 
 /**
- * Routes for handling download-related requests.
- * All routes under '/download' will be handled by downloadRoute.
+ * Routes for handling videoInfo-related requests.
+ * All routes under '/videoInfo' will be handled by videoInfoRoute.
  */
 app.use('/videoInfo', info);
 

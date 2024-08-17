@@ -1,18 +1,57 @@
+/**
+ * TubeFetch API - Unit and Integration Tests
+ * 
+ * @file videoInfoRoute.test.ts
+ * @description This file contains unit and integration tests for the TubeFetch API, ensuring the correct behavior of utility functions and the video information retrieval route.
+ * 
+ * Dependencies:
+ * - `validateUrl`: Utility function to validate if a given string is a valid YouTube URL.
+ * - `isVideoFormat`: Type guard to check if an object matches the `videoFormat` interface.
+ * - `request`: Supertest module used to simulate HTTP requests to the Express application.
+ * - Express Application: A simple Express app with the `/videoInfo` route for testing.
+ * 
+ * Tests:
+ * 
+ * - "validate url":
+ *   - Tests the `validateUrl` function with both an invalid and a valid YouTube URL.
+ *   - @function validateUrl
+ *   - @expected {boolean} false - for invalid URL
+ *   - @expected {boolean} true - for valid URL
+ * 
+ * - "validate if the object given is a videoFormat":
+ *   - Tests the `isVideoFormat` function with both an invalid and a valid object.
+ *   - @function isVideoFormat
+ *   - @expected {boolean} false - for object not matching `videoFormat`
+ *   - @expected {boolean} true - for object matching `videoFormat`
+ * 
+ * - "POST /videoInfo":
+ *   - Integration test to ensure the `/videoInfo` route behaves correctly.
+ *   - @route POST /videoInfo
+ *   - @setup Initializes an Express application with the `/videoInfo` route before running tests.
+ *   - @test "should return 200": Tests a valid YouTube URL, expecting a 200 status.
+ *   - @test "should return 404": Tests an invalid YouTube URL, expecting a 404 status.
+ * 
+ * @module videoInfoRoute.test.ts
+ * 
+ * @author Arthur M. Artugue
+ * @created 2024-08-12
+ * @updated 2024-08-17
+ */
+
 import { validateUrl, isVideoFormat } from "../src/functions/utils";
 import request from 'supertest';
 import express, { Express } from 'express';
-import ytdl from "@distube/ytdl-core";
-import videoInfoRoute from '../src/routes/videoInfoRoute'
+import videoInfoRoute from '../src/routes/videoInfoRoute';
 
 test("validate url", () => {
     expect(validateUrl("da;lfkjdaf")).toBe(false);
     expect(validateUrl("https://youtu.be/Sq-lO1CmaDs?si=ZFG0KxJsfhvfPXhH")).toBe(true);
-})
+});
 
 test("validate if the object given is a videoFormat", () => {
     const fail = {
         fail: ""
-    }
+    };
 
     const success = {
         "mimeType": "video/mp4; codecs=\"avc1.42001E, mp4a.40.2\"",
@@ -40,11 +79,11 @@ test("validate if the object given is a videoFormat", () => {
         "isLive": false,
         "isHLS": false,
         "isDashMPD": false
-    }
+    };
 
-    expect(isVideoFormat(fail)).toBe(false)
-    expect(isVideoFormat(success)).toBe(true)
-})
+    expect(isVideoFormat(fail)).toBe(false);
+    expect(isVideoFormat(success)).toBe(true);
+});
 
 describe('POST /videoInfo', () => {
     let app: Express;
