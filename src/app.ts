@@ -27,7 +27,8 @@
  */
 
 import express, { Request, Response, NextFunction } from 'express';
-import info from './routes/videoInfoRoute'
+import info from './routes/videoInfoRoute';
+import cors from 'cors';
 
 const PORT = 8080;
 const app = express();
@@ -51,6 +52,10 @@ function errorHandler(err: Error | null, req: Request, res: Response, next: Next
 }
 
 // MIDDLEWARE - To parse and read body to json
+// Enable CORS for all routes
+app.use(cors({
+    origin: 'http://localhost:3000' // Replace with your frontend URL
+  }));
 app.use(express.json());
 app.use(errorHandler);
 
