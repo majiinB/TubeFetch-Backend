@@ -1,12 +1,15 @@
-import Test from "supertest/lib/test";
 import { validateUrl, isVideoFormat } from "../src/functions/utils";
+import request from 'supertest';
+import express, { Express } from 'express';
+import ytdl from "@distube/ytdl-core";
+import videoInfoRoute from '../src/routes/videoInfoRoute'
 
 test("validate url", () => {
     expect(validateUrl("da;lfkjdaf")).toBe(false);
-    expect(validateUrl("https://youtu.be/AS1J1pnQ1Sk?si=EhzKJt99RuriTqYA")).toBe(true);
+    expect(validateUrl("https://youtu.be/Sq-lO1CmaDs?si=ZFG0KxJsfhvfPXhH")).toBe(true);
 })
 
-test("validate if the object given is a VideoFormat", () => {
+test("validate if the object given is a videoFormat", () => {
     const fail = {
         fail: ""
     }
@@ -42,3 +45,29 @@ test("validate if the object given is a VideoFormat", () => {
     expect(isVideoFormat(fail)).toBe(false)
     expect(isVideoFormat(success)).toBe(true)
 })
+
+describe('POST /videoInfo', () => {
+    let app: Express;
+
+    beforeAll(() => {
+        app = express();
+        app.use(express.json());
+        app.use('/videoInfo', videoInfoRoute);
+    });
+
+    it('should return 200', async () => {
+        const response = await request(app)
+            .post('/videoInfo')
+            .send({ url: 'https://youtu.be/Sq-lO1CmaDs?si=ZFG0KxJsfhvfPXhH' });
+
+        expect(response.status).toBe(200);
+    });
+
+    it('should return 404', async () => {
+        const response = await request(app)
+            .post('/videoInfo')
+            .send({ url: 'https://youtu.be/Sq' });
+
+        expect(response.status).toBe(404);
+    });
+});

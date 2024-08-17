@@ -9,6 +9,8 @@ router.post('/', async (req: Request<{}, {}, VideoInfoRequest>, res: Response<In
     const { url } = req.body;
 
     if (!validateUrl(url) || !url) {
+        console.log('URL:', url, 'Validation Result:', validateUrl(url));
+
         return res.status(404).json({ code: 'invalid_url', message: 'Invalid url please try again' });
     }
 
