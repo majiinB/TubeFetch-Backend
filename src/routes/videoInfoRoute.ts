@@ -22,10 +22,9 @@
  * 
  * @author Arthur M. Artugue
  * @created 2024-08-10
- * @updated 2024-08-17
+ * @updated 2024-09-02
  */
 
-// Import necessary modules
 import express, { Request, Response } from "express";
 import ytdl, { videoFormat } from '@distube/ytdl-core';
 import { validateUrl } from '../functions/utils';

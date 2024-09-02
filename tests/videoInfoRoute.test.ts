@@ -2,7 +2,8 @@
  * TubeFetch API - Unit and Integration Tests
  * 
  * @file videoInfoRoute.test.ts
- * @description This file contains unit and integration tests for the TubeFetch API, ensuring the correct behavior of utility functions and the video information retrieval route.
+ * @description This file contains unit and integration tests for the TubeFetch API, ensuring the correct behavior of utility functions 
+ *              and the video information retrieval route.
  * 
  * Dependencies:
  * - `validateUrl`: Utility function to validate if a given string is a valid YouTube URL.
